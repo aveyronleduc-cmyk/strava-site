@@ -1,0 +1,85 @@
+:root{
+  --glass-bg-light: rgba(255,255,255,0.55);
+  --glass-bg-dark: rgba(24,24,27,0.45);
+  --glass-border-light: rgba(255,255,255,0.7);
+  --glass-border-dark: rgba(255,255,255,0.08);
+  --ring: rgba(99,102,241,0.35); /* indigo-500 */
+}
+
+/* Scene de fond avec blobs flous et bruit léger */
+.bg-scene{ position: fixed; inset: -10vh; z-index: 0; overflow: hidden; }
+.blob{ position: absolute; filter: blur(80px); opacity: .55; mix-blend-mode: screen; }
+.blob-1{ width: 60vmax; height: 60vmax; background: radial-gradient(circle at 30% 30%, #a78bfa, transparent 60%);
+         top: -10vmax; left: -10vmax; animation: float1 18s ease-in-out infinite; }
+.blob-2{ width: 55vmax; height: 55vmax; background: radial-gradient(circle at 70% 40%, #34d399, transparent 60%);
+         right: -15vmax; top: 10vmax; animation: float2 22s ease-in-out infinite; }
+.blob-3{ width: 50vmax; height: 50vmax; background: radial-gradient(circle at 50% 70%, #60a5fa, transparent 60%);
+         left: 10vmax; bottom: -15vmax; animation: float3 26s ease-in-out infinite; }
+
+.noise{ position:absolute; inset:-200%; background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAFo9M/3AAAARklEQVQ4jWNgGAWjgP9Hn1CwYGBg+M8wMDAw4Z8bQGQwMDA8iGgYQ4yQ0QwMDA4GJQF8QwQYg0GQxQGEcQwQbQBTQwAAWiQdH5l1k2gAAAABJRU5ErkJggg==");
+        opacity:.035; mix-blend-mode: overlay; pointer-events:none; }
+
+@keyframes float1{ 0%{transform:translate3d(0,0,0);} 50%{transform:translate3d(3vmax, -2vmax,0);} 100%{transform:translate3d(0,0,0);} }
+@keyframes float2{ 0%{transform:translate3d(0,0,0);} 50%{transform:translate3d(-2vmax, 3vmax,0);} 100%{transform:translate3d(0,0,0);} }
+@keyframes float3{ 0%{transform:translate3d(0,0,0);} 50%{transform:translate3d(2vmax, -3vmax,0);} 100%{transform:translate3d(0,0,0);} }
+
+/* Effet glass générique */
+.glass{ backdrop-filter: saturate(140%) blur(14px); -webkit-backdrop-filter: saturate(140%) blur(14px);
+        background: var(--glass-bg-light); box-shadow: 0 8px 30px rgba(0,0,0,.06), inset 0 1px 0 var(--glass-border-light);
+}
+.dark .glass{ background: var(--glass-bg-dark); box-shadow: 0 8px 30px rgba(0,0,0,.45), inset 0 1px 0 var(--glass-border-dark); }
+
+/* Cartes vitrées améliorées */
+.card{ position: relative; border-radius: 20px; border: 1px solid rgba(255,255,255,.35); }
+.card::before{ content:""; position:absolute; inset:0; border-radius: inherit; pointer-events:none;
+  background: radial-gradient(120% 80% at 0% 0%, rgba(255,255,255,.25), transparent 35%),
+              linear-gradient(180deg, rgba(255,255,255,.10), transparent 30%);
+}
+.dark .card{ border-color: rgba(255,255,255,.08); }
+.card:hover{ transform: translateY(-2px); transition: transform .2s ease, box-shadow .2s ease; }
+
+/* Boutons raffinés */
+.btn{ border-radius: 14px; border: 1px solid rgba(255,255,255,.35); transition: transform .15s ease, box-shadow .2s ease, background .2s ease; }
+.btn:hover{ transform: translateY(-1px); }
+.btn-primary{ box-shadow: 0 6px 18px rgba(79,70,229,.35); }
+.btn-secondary{ box-shadow: 0 4px 14px rgba(0,0,0,.06); }
+
+/* Tags/chips */
+.tag{ border: 1px solid rgba(255,255,255,.35); }
+
+/* Tables douces */
+.table tr{ transition: background .15s ease; }
+.table tr:hover{ background: rgba(99,102,241,0.06); }
+.dark .table tr:hover{ background: rgba(99,102,241,0.12); }
+
+/* Inputs et focus ring */
+.input{ border-radius: 14px !important; border-color: rgba(255,255,255,.35) !important; background: var(--glass-bg-light) !important; }
+.dark .input{ background: var(--glass-bg-dark) !important; }
+.input:focus{ outline: none; box-shadow: 0 0 0 6px var(--ring); border-color: transparent; }
+
+/* Header flottant plus chic */
+header{ position: sticky; top: 0; }
+header .btn{ backdrop-filter: blur(8px); }
+
+/* Par petites animations à l'affichage */
+.reveal{ opacity:0; transform: translateY(8px); }
+.reveal.show{ opacity:1; transform:none; transition: opacity .6s ease, transform .6s ease; }
+
+/* Grille & espacements doux */
+section.card{ background: transparent; }
+section.card > *{ position: relative; z-index: 1; }
+
+/* KPI tuiles */
+#connect .card{ background: var(--glass-bg-light); }
+.dark #connect .card{ background: var(--glass-bg-dark); }
+
+/* Légère lueur autour des graphes */
+#cashflowChart{ filter: drop-shadow(0 10px 25px rgba(0,0,0,.08)); }
+
+/* Footer discret */
+footer{ text-shadow: 0 1px 0 rgba(255,255,255,.35); }
+
+/* Petites corrections responsives */
+@media (max-width: 640px){
+  nav a.btn{ padding: .4rem .6rem; }
+}
