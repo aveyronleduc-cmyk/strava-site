@@ -1,162 +1,142 @@
-/* ===== Reset & Variables ===== */
+/* =========================
+   BudgetZen – styles.css
+   Design sombre “glass”, doux et lisible
+   ========================= */
+
+/* Variables */
 :root{
-  --bg-0:#0d1117;         /* fond principal */
-  --bg-1:#111827;         /* panneaux/cards */
-  --bg-2:#0b1220a6;       /* verre (alpha) */
-  --tx-0:#e5e7eb;         /* texte principal */
-  --tx-1:#9ca3af;         /* texte secondaire */
-  --pr-0:#60a5fa;         /* primaire */
-  --pr-1:#3b82f6;         /* primaire hover */
-  --ok-0:#22c55e;
-  --warn-0:#f59e0b;
-  --err-0:#ef4444;
-  --br:#1f2937;           /* bordures */
-  --rad:16px;             /* rayon générique */
+  --bg-0:#0b1020;          /* fond global */
+  --panel:#0f172a;         /* cartes */
+  --panel-2:rgba(17,24,39,.7); /* glass */
+  --text:#e5e7eb;
+  --muted:#9ca3af;
+  --border:#1f2937;
+  --pri:#60a5fa;
+  --pri-2:#3b82f6;
+  --ok:#22c55e; --warn:#f59e0b; --err:#ef4444;
+  --rad:16px;
   --shadow:0 10px 30px rgba(0,0,0,.35);
 }
 
+/* Lissage / base */
 *{box-sizing:border-box}
 html,body{height:100%}
 body{
-  margin:0;
-  font:16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif;
-  color:var(--tx-0);
-  background:
-    radial-gradient(1000px 600px at 10% -10%, #0b1324 0%, transparent 60%),
-    radial-gradient(800px 600px at 90% 10%, #121c32 0%, transparent 60%),
-    var(--bg-0);
+  color:var(--text);
+  -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
 }
 
-/* ===== Layout ===== */
-.container{
-  width:min(1100px, 92vw);
-  margin-inline:auto;
-  padding:24px 0;
+/* ---------- Décor de fond (blobs + bruit) ---------- */
+.bg-scene{position:fixed; inset:0; z-index:-1; overflow:hidden}
+.bg-scene .blob{
+  position:absolute; width:700px; height:700px; border-radius:999px; filter:blur(60px);
+  opacity:.35; transform:translate(-50%,-50%);
+}
+.bg-scene .blob-1{left:8%; top:0%; background:radial-gradient(closest-side at 50% 50%, #3b82f6, transparent 70%)}
+.bg-scene .blob-2{right:-10%; top:10%; background:radial-gradient(closest-side at 50% 50%, #10b981, transparent 70%)}
+.bg-scene .blob-3{left:40%; bottom:-10%; background:radial-gradient(closest-side at 50% 50%, #8b5cf6, transparent 70%)}
+.bg-scene .noise{
+  position:absolute; inset:-100px; pointer-events:none; opacity:.05; mix-blend:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-.header{
-  display:flex; align-items:center; justify-content:space-between;
-  gap:16px; padding:20px 0;
-}
-.brand{font-weight:700; letter-spacing:.4px;}
-.brand .badge{font-size:.75rem; padding:.1rem .5rem; border:1px solid var(--br); border-radius:999px; color:var(--tx-1)}
-
-.grid{
-  display:grid; gap:16px;
-  grid-template-columns: repeat(12, 1fr);
-}
-.col-12{grid-column:span 12}
-.col-8{grid-column:span 8}
-.col-6{grid-column:span 6}
-.col-4{grid-column:span 4}
-@media (max-width: 980px){
-  .col-8,.col-6,.col-4{grid-column:span 12}
+/* ---------- Effet “glass” sur header ---------- */
+.glass{
+  backdrop-filter:saturate(140%) blur(8px);
+  -webkit-backdrop-filter:saturate(140%) blur(8px);
 }
 
-/* ===== Cards / Panels ===== */
+/* ---------- Tags (version, statut…) ---------- */
+.tag{
+  display:inline-flex; align-items:center; gap:.35rem;
+  padding:.25rem .6rem; border-radius:999px;
+  font-size:.75rem; color:var(--muted);
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.04);
+}
+
+/* ---------- Cartes ---------- */
 .card{
-  background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.00)) , var(--bg-1);
+  background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0)) , var(--panel);
   border:1px solid rgba(255,255,255,.06);
   border-radius:var(--rad);
   box-shadow:var(--shadow);
   padding:18px;
   backdrop-filter:saturate(140%) blur(6px);
 }
-.card h2,.card h3{margin:0 0 10px}
-.muted{color:var(--tx-1)}
 
-/* ===== Buttons ===== */
+/* ---------- Boutons ---------- */
 .btn{
-  appearance:none; border:0; cursor:pointer;
-  padding:10px 14px; border-radius:12px; font-weight:600;
-  background:var(--pr-0); color:#0b1020;
-  transition:transform .06s ease, filter .2s ease, background .2s ease;
+  appearance:none; border:0; cursor:pointer; user-select:none;
+  padding:.6rem .9rem; border-radius:12px; font-weight:600;
+  transition:transform .06s ease, background .2s ease, filter .2s ease, box-shadow .2s ease;
 }
-.btn:hover{background:var(--pr-1)}
 .btn:active{transform:translateY(1px)}
-.btn.ghost{
-  background:transparent; color:var(--tx-0);
-  border:1px solid var(--br);
-}
-.btn.success{background:var(--ok-0); color:#04110a}
-.btn.warn{background:var(--warn-0); color:#120d03}
 
-/* ===== Inputs / Forms ===== */
+.btn-primary{
+  background:var(--pri); color:#0b1020;
+  box-shadow:0 6px 18px rgba(96,165,250,.25);
+}
+.btn-primary:hover{background:var(--pri-2)}
+.btn-secondary{
+  color:var(--text);
+  background:rgba(255,255,255,.06);
+  border:1px solid var(--border);
+}
+.btn-secondary:hover{background:rgba(255,255,255,.1)}
+
+/* ---------- Inputs / selects / textareas ---------- */
 .input, select, textarea{
-  width:100%; color:var(--tx-0); background:#0b1220;
-  border:1px solid var(--br); border-radius:12px;
-  padding:10px 12px; outline:none;
-  transition:border-color .2s ease, box-shadow .2s ease;
+  width:100%;
+  color:var(--text);
+  background:#0b1220;
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:.6rem .75rem;
+  outline:none;
+  transition:border-color .2s ease, box-shadow .2s ease, background .2s ease;
 }
+.input::placeholder{color:#7f8696}
 .input:focus, select:focus, textarea:focus{
-  border-color:var(--pr-0);
+  border-color:var(--pri);
   box-shadow:0 0 0 3px rgba(96,165,250,.2);
-}
-.label{display:block; color:var(--tx-1); font-size:.9rem; margin-bottom:6px}
-
-/* ===== Pills / Badges ===== */
-.pill{
-  display:inline-flex; align-items:center; gap:6px;
-  padding:6px 10px; border-radius:999px; font-size:.85rem;
-  background:#0e1627; border:1px solid var(--br); color:var(--tx-1);
+  background:#0c1427;
 }
 
-/* ===== Tables ===== */
-.table{
-  width:100%; border-collapse:separate; border-spacing:0;
-  font-size:.95rem;
-}
+/* ---------- Tableaux ---------- */
+.table{width:100%; border-collapse:separate; border-spacing:0; font-size:.95rem}
 .table thead th{
-  text-align:left; color:var(--tx-1); font-weight:600;
-  padding:10px 12px; position:sticky; top:0; background:#0f172a;
+  text-align:left; color:var(--muted); font-weight:700;
+  padding:10px 12px; background:#0f172a; position:sticky; top:0; z-index:1;
 }
-.table tbody td{
-  padding:12px; border-top:1px solid var(--br);
+.table tbody td{padding:12px; border-top:1px solid var(--border)}
+.table tbody tr:hover{background:rgba(255,255,255,.03)}
+.table .text-right{text-align:right}
+
+/* ---------- <details> aides ---------- */
+details{
+  background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0));
+  backdrop-filter:saturate(140%) blur(4px);
+  border-radius:14px;
 }
-.table tbody tr:hover{background:rgba(255,255,255,.02)}
+details[open]{border-color:#263244}
 
-/* ===== KPI tiles ===== */
-.kpis{display:grid; grid-template-columns:repeat(4,1fr); gap:12px}
-.kpi{
-  background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,0)),
-             rgba(14,22,39,.8);
-  border:1px solid rgba(255,255,255,.06);
-  border-radius:14px; padding:14px 16px;
+/* ---------- Dialog (modales) ---------- */
+dialog{
+  background:var(--panel);
+  color:var(--text);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:18px;
+  box-shadow:var(--shadow);
 }
-.kpi .label{font-size:.8rem; color:var(--tx-1); margin:0}
-.kpi .value{font-size:1.6rem; font-weight:800; margin-top:4px}
-@media (max-width: 900px){ .kpis{grid-template-columns:repeat(2,1fr)} }
-@media (max-width: 520px){ .kpis{grid-template-columns:1fr} }
+dialog::backdrop{background:rgba(0,0,0,.45)}
 
-/* ===== Hero / Empty states ===== */
-.empty{
-  display:grid; place-items:center; text-align:center;
-  padding:36px; border-radius:var(--rad); border:1px dashed var(--br); color:var(--tx-1);
-  background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.0));
-}
+/* ---------- Utilitaires légers ---------- */
+.text-zinc-500{color:#71717a}
+.text-zinc-600{color:#52525b}
+.text-zinc-300{color:#d4d4d8}
+.text-zinc-200{color:#e4e4e7}
 
-/* ===== Nav (si tu as un menu) ===== */
-.nav{
-  display:flex; gap:8px; align-items:center; flex-wrap:wrap;
-  background:rgba(255,255,255,.02); border:1px solid rgba(255,255,255,.06);
-  padding:8px; border-radius:12px;
-}
-.nav a{
-  text-decoration:none; color:var(--tx-1);
-  padding:8px 10px; border-radius:10px;
-}
-.nav a.active, .nav a:hover{color:var(--tx-0); background:#111a2e}
-
-/* ===== Helpers ===== */
-.row{display:flex; gap:12px; flex-wrap:wrap}
-.spacer{height:16px}
-.center{display:grid; place-items:center}
-.right{text-align:right}
-.hide{display:none}
-
-/* ===== Footer ===== */
-.footer{color:var(--tx-1); font-size:.9rem; padding:26px 0; border-top:1px solid var(--br); margin-top:24px}
-
-/* ===== Animations petites ===== */
+/* Petites animations */
 .fade-in{animation:fade .35s ease both}
 @keyframes fade{from{opacity:0; transform:translateY(4px)} to{opacity:1; transform:none}}
